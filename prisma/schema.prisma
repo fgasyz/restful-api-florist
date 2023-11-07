@@ -1,0 +1,94 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Admin {
+  username String @db.VarChar(20) @id
+  no_hp Int?
+  password String @db.VarChar(20)
+  token String? @db.VarChar(20) 
+  product Product[]
+  report Report[]
+
+  @@map("admin")
+}
+
+model User {
+  username String @db.VarChar(20) @id
+  no_hp Int
+  alamat String @db.Text()
+  password String @db.VarChar(20)
+  token String? @db.VarChar(20)
+  cart Cart[]
+  order Order[]
+
+  @@map("user")
+}
+
+model Product {
+  id Int @id @default(autoincrement())
+  product_name String @db.VarChar(40)
+  price Int 
+  description String @db.VarChar(40)
+  picture String @db.VarChar(40)
+  stock Int?
+  username_admin String @db.VarChar(20)
+  category_id Int
+  cart_id Int
+  admin Admin @relation(fields: [username_admin], references: [username])
+  category Category @relation(fields: [category_id], references: [id])
+  cart Cart @relation(fields: [cart_id], references: [id])
+
+  @@map("product")
+}
+
+model Category {
+  id Int @id @default(autoincrement())
+  category_name String @db.VarChar(40)
+  product Product[] 
+
+  @@map("category")
+}
+
+model Cart {
+  id Int @id @default(autoincrement())
+  total_price String @db.VarChar(30)
+  username_user String
+  user User @relation(fields: [username_user], references: [username])
+  product Product[]
+  order Order[]
+
+  @@map("cart")
+}
+
+model Order {
+  id Int @default(autoincrement()) @id
+  proof String @db.VarChar(20)
+  status String @db.VarChar(20)
+  username_user String @db.VarChar(20)
+  cart_id Int @unique
+  user User @relation(fields: [username_user], references: [username])
+  cart Cart @relation(fields: [cart_id], references: [id])
+  report Report?
+
+  @@map("order")
+}
+
+model Report {
+  id Int @default(autoincrement()) @id
+  date DateTime @db.DateTime() @default(now())
+  username_admin String @db.VarChar(20)
+  order_id Int @unique
+  admin Admin @relation(fields: [username_admin], references: [username])
+  order Order @relation(fields: [order_id], references: [id])
+
+  @@map("report")
+}
