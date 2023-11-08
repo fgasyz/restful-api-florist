@@ -1,20 +1,18 @@
 -- CreateTable
 CREATE TABLE `admin` (
-    `username` VARCHAR(20) NOT NULL,
-    `no_hp` INTEGER NULL,
-    `password` VARCHAR(20) NOT NULL,
-    `token` VARCHAR(20) NULL,
+    `username` VARCHAR(191) NOT NULL,
+    `no_hp` VARCHAR(13) NOT NULL,
+    `password` VARCHAR(191) NOT NULL,
 
     PRIMARY KEY (`username`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
 CREATE TABLE `user` (
-    `username` VARCHAR(20) NOT NULL,
-    `no_hp` INTEGER NOT NULL,
+    `username` VARCHAR(191) NOT NULL,
+    `no_hp` VARCHAR(13) NOT NULL,
     `alamat` TEXT NOT NULL,
     `password` VARCHAR(20) NOT NULL,
-    `token` VARCHAR(20) NULL,
 
     PRIMARY KEY (`username`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -27,7 +25,7 @@ CREATE TABLE `product` (
     `description` VARCHAR(40) NOT NULL,
     `picture` VARCHAR(40) NOT NULL,
     `stock` INTEGER NULL,
-    `username_admin` VARCHAR(20) NOT NULL,
+    `username_admin` VARCHAR(191) NOT NULL,
     `category_id` INTEGER NOT NULL,
     `cart_id` INTEGER NOT NULL,
 
@@ -56,7 +54,7 @@ CREATE TABLE `order` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `proof` VARCHAR(20) NOT NULL,
     `status` VARCHAR(20) NOT NULL,
-    `username_user` VARCHAR(20) NOT NULL,
+    `username_user` VARCHAR(191) NOT NULL,
     `cart_id` INTEGER NOT NULL,
 
     UNIQUE INDEX `order_cart_id_key`(`cart_id`),
@@ -67,7 +65,7 @@ CREATE TABLE `order` (
 CREATE TABLE `report` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `date` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-    `username_admin` VARCHAR(20) NOT NULL,
+    `username_admin` VARCHAR(191) NOT NULL,
     `order_id` INTEGER NOT NULL,
 
     UNIQUE INDEX `report_order_id_key`(`order_id`),

@@ -1,4 +1,5 @@
-const { PrismaClient } = require("@prisma/client");
+const { PrismaClient } = require("@prisma/client")
+const logger = require("../application/logger.js")
 
 const prismaClient = new PrismaClient({
     log: [
@@ -37,4 +38,4 @@ prismaClient.$on("query", (query) => {
     logger.info(query)
 })
 
-module.exports = prismaClient;
+module.exports = prismaClient

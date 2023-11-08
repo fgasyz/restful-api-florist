@@ -1,6 +1,13 @@
-const express = require("express");
+const express = require("express")
+const errorMiddleware = require("../middleware/ErrorMiddleware.js")
+const adminRouter = require("../router")
 
-const web = express();
+const web = express()
 
+web.use(express.json())
 
-module.exports = web;
+web.use(adminRouter)
+
+web.use(errorMiddleware)
+
+module.exports = web
