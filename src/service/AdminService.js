@@ -27,7 +27,7 @@ async function loginAdmin(request) {
     if(!admin) throw new AuthenticationError("incorrect username")
     const isMatch = await bcrypt.compare(adminValidation.password, admin.password)
     if(!isMatch) throw new AuthenticationError("incorrect password")
-    const payload = {admin: admin.username}
+    const payload = {admin: admin.username, role: "admin"}
     const accessToken = await generateAcccessToken(payload)
     const refreshToken = await generateRefreshToken(payload)
     const data = {admin, accessToken, refreshToken}

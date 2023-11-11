@@ -27,7 +27,7 @@ async function loginUser(request) {
     if(!user) throw new AuthenticationError("incorrect username")
     const isMatch = await bcrypt.compare(userValidation.password, user.password)
     if(!isMatch) throw new AuthenticationError("incorrect password")
-    const payload = {user: user.username}
+    const payload = {user: user.username, role: "user"}
     const accessToken = await generateAcccessToken(payload)
     const refreshToken = await generateRefreshToken(payload)
     const data = {user, accessToken, refreshToken}
