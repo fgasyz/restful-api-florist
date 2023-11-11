@@ -11,8 +11,8 @@ CREATE TABLE `admin` (
 CREATE TABLE `user` (
     `username` VARCHAR(191) NOT NULL,
     `no_hp` VARCHAR(13) NOT NULL,
-    `alamat` TEXT NOT NULL,
-    `password` VARCHAR(20) NOT NULL,
+    `alamat` TEXT NULL,
+    `password` VARCHAR(191) NOT NULL,
 
     PRIMARY KEY (`username`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -20,11 +20,11 @@ CREATE TABLE `user` (
 -- CreateTable
 CREATE TABLE `product` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `product_name` VARCHAR(40) NOT NULL,
-    `price` INTEGER NOT NULL,
-    `description` VARCHAR(40) NOT NULL,
-    `picture` VARCHAR(40) NOT NULL,
-    `stock` INTEGER NULL,
+    `product_name` VARCHAR(191) NOT NULL,
+    `price` INTEGER NOT NULL DEFAULT 0,
+    `description` VARCHAR(191) NOT NULL,
+    `picture` VARCHAR(191) NOT NULL,
+    `stock` INTEGER NOT NULL DEFAULT 0,
     `username_admin` VARCHAR(191) NOT NULL,
     `category_id` INTEGER NOT NULL,
     `cart_id` INTEGER NOT NULL,
@@ -43,7 +43,7 @@ CREATE TABLE `category` (
 -- CreateTable
 CREATE TABLE `cart` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `total_price` VARCHAR(30) NOT NULL,
+    `total_price` INTEGER NOT NULL DEFAULT 0,
     `username_user` VARCHAR(191) NOT NULL,
 
     PRIMARY KEY (`id`)

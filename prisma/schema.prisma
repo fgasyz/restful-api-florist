@@ -23,8 +23,8 @@ model Admin {
 model User {
   username String @id
   no_hp String @db.VarChar(13)
-  alamat String @db.Text()
-  password String @db.VarChar(20)
+  alamat String? @db.Text()
+  password String
   cart Cart[]
   order Order[]
 
@@ -33,11 +33,11 @@ model User {
 
 model Product {
   id Int @id @default(autoincrement())
-  product_name String @db.VarChar(40)
-  price Int 
-  description String @db.VarChar(40)
-  picture String @db.VarChar(40)
-  stock Int?
+  product_name String 
+  price Int @default(0)
+  description String 
+  picture String
+  stock Int @default(0)
   username_admin String
   category_id Int
   cart_id Int
@@ -58,7 +58,7 @@ model Category {
 
 model Cart {
   id Int @id @default(autoincrement())
-  total_price String @db.VarChar(30)
+  total_price Int @default(0)
   username_user String
   user User @relation(fields: [username_user], references: [username])
   product Product[]
@@ -68,7 +68,7 @@ model Cart {
 }
 
 model Order {
-  id Int @default(autoincrement()) @id
+  id Int @id @default(autoincrement())
   proof String @db.VarChar(20)
   status String @db.VarChar(20)
   username_user String
@@ -81,7 +81,7 @@ model Order {
 }
 
 model Report {
-  id Int @default(autoincrement()) @id
+  id Int @id @default(autoincrement())
   date DateTime @db.DateTime() @default(now())
   username_admin String 
   order_id Int @unique

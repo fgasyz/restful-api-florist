@@ -1,12 +1,12 @@
 const express = require("express")
 const errorMiddleware = require("../middleware/ErrorMiddleware.js")
-const adminRouter = require("../router")
+const authRouter = require("../router/authRouter.js")
 
 const web = express()
 
 web.use(express.json())
 
-web.use(adminRouter)
+web.use(authRouter)
 
 web.use(errorMiddleware)
 

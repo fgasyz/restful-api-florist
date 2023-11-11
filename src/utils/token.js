@@ -1,21 +1,18 @@
 const jsonwebtoken = require("jsonwebtoken")
-const CustomJsonWebTokenError = require("../exceptions/CustomJsonWebTokenError")
 const env = require("dotenv").config().parsed
 
 const token = {
     generateAcccessToken : async function (payload) {
-        return jsonwebtoken.sign(payload, env.ACCESS_TOKEN, {expiresIn: "2m"})
+        return jsonwebtoken.sign(payload, env.ACCESS_TOKEN_SECRET_KEY, {expiresIn: "10m"})
     },
     generateRefreshToken: async function (payload) {
-        return jsonwebtoken.sign(payload, env.REFRESH_TOKEN, {expiresIn: "5m"})
+        return jsonwebtoken.sign(payload, env.REFRESH_TOKEN_SECRET_KEY, {expiresIn: "15m"})
+    },
+    verifyAccessToken: async function (token) {
+        return jsonwebtoken.verify(token, env.ACCESS_TOKEN_SECRET_KEY)
     },
     verifyRefreshToken: async function (token) {
-        return jsonwebtoken.verify(token, env.REFRESH_TOKEN, (err, data) => {
-            if(err) {
-                throw new CustomJsonWebTokenError("invalid refreshtoken")
-            }
-            return data
-        })
+        return jsonwebtoken.verify(token, env.REFRESH_TOKEN_SECRET_KEY)
     }
 }
 

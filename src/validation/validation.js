@@ -5,7 +5,9 @@ const validation = (schema, payload) => {
         abortEarly: false,
         allowUnknown: false
     })
-    if(result.error) {throw new ClientError("Data isn't correct")}
+    if(result.error) {
+      throw result.error
+    }
     else {return result.value}
 }
 

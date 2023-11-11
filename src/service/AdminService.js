@@ -4,8 +4,6 @@ const bcrypt = require("bcrypt")
 const prismaClient = require("../application/database.js")
 const AuthenticationError = require("../exceptions/AuthenticationError.js")
 const {generateAcccessToken, generateRefreshToken, verifyRefreshToken} = require("../utils/token.js")
-const ClientError = require("../exceptions/ClientError.js")
-const CustomJsonWebTokenError = require("../exceptions/CustomJsonWebTokenError.js")
 
 async function registerAdmin(request) {
     const adminValidation = validate(createAdminValidation, request)

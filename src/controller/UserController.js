@@ -1,12 +1,12 @@
-const AdminService = require("../service/AdminService.js")
+const UserService = require("../service/UserService.js")
 
-async function registerAdmin(req, res, next) {
+async function registerUser(req, res, next) {
     try {
-        const data = await AdminService.registerAdmin(req.body)
+        const data = await UserService.registerUser(req.body)
         res.status(201).json({
-            message: "create admin success",
+            message: "create user success",
             data: {
-                admin: data
+                user: data
             }
         })
     } catch (error) {
@@ -14,9 +14,9 @@ async function registerAdmin(req, res, next) {
     }
 }
 
-async function loginAdmin(req, res, next) {
+async function loginUser(req, res, next) {
     try {
-        const data = await AdminService.loginAdmin(req.body)
+        const data = await UserService.loginUser(req.body)
         res.status(201).json({
             message: "login success",
             data: {data}
@@ -28,7 +28,7 @@ async function loginAdmin(req, res, next) {
 
 async function generateRefreshTokenForLogin(req, res, next) {
     try {
-        const tokens = await AdminService.generateRefreshTokenForLogin(req.body)
+        const tokens = await UserService.generateRefreshTokenForLogin(req.body)
         res.status(201).json({
             message: "create refreshtoken success",
             tokens
@@ -38,4 +38,4 @@ async function generateRefreshTokenForLogin(req, res, next) {
     }
 }
 
-module.exports = {registerAdmin, loginAdmin, generateRefreshTokenForLogin}
+module.exports = {registerUser, loginUser, generateRefreshTokenForLogin}
