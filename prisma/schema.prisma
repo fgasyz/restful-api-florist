@@ -16,6 +16,7 @@ model Admin {
   password String
   product Product[]
   report Report[]
+  refresh_token String?
 
   @@map("admin")
 }
@@ -27,6 +28,7 @@ model User {
   password String
   cart Cart[]
   order Order[]
+  refresh_token String?
 
   @@map("user")
 }

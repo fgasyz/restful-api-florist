@@ -3,6 +3,7 @@ CREATE TABLE `admin` (
     `username` VARCHAR(191) NOT NULL,
     `no_hp` VARCHAR(13) NOT NULL,
     `password` VARCHAR(191) NOT NULL,
+    `refresh_token` VARCHAR(191) NOT NULL,
 
     PRIMARY KEY (`username`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -13,6 +14,7 @@ CREATE TABLE `user` (
     `no_hp` VARCHAR(13) NOT NULL,
     `alamat` TEXT NULL,
     `password` VARCHAR(191) NOT NULL,
+    `refresh_token` VARCHAR(191) NOT NULL,
 
     PRIMARY KEY (`username`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;

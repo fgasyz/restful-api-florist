@@ -1,6 +1,8 @@
 const express = require("express")
 const AdminController = require("../controller/AdminController.js")
 const UserController = require("../controller/UserController.js")
+const adminAuthMiddleware = require("../middleware/adminAuthMiddleware.js")
+const userAuthMiddleware = require("../middleware/userAuthMiddleware.js")
 
 const authRouter = express.Router()
 
