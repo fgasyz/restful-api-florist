@@ -42,10 +42,9 @@ model Product {
   stock Int @default(0)
   username_admin String
   category_id Int
-  cart_id Int
   admin Admin @relation(fields: [username_admin], references: [username])
   category Category @relation(fields: [category_id], references: [id])
-  cart Cart @relation(fields: [cart_id], references: [id])
+  Cart Cart[]
 
   @@map("product")
 }
@@ -62,8 +61,9 @@ model Cart {
   id Int @id @default(autoincrement())
   total_price Int @default(0)
   username_user String
+  product_id Int
   user User @relation(fields: [username_user], references: [username])
-  product Product[]
+  product Product @relation(fields: [product_id], references: [id])
   order Order[]
 
   @@map("cart")
