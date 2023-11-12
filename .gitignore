@@ -1,5 +1,9 @@
 node_modules
 # Keep environment variables out of version control
 # .env
+<<<<<<< HEAD
+=======
+
+>>>>>>> 3314fb7fd5d90ebcf2fbd7d98a01cd287fae8ff8
 prisma/migrations
 tmp
