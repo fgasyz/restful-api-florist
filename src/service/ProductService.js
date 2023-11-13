@@ -36,6 +36,7 @@ async function createProduct(request, admin, picture) {
           category_id: category.id,
         },
         select: {
+          id: true,
           product_name: true,
           price: true,
           description: true,

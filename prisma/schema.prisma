@@ -34,14 +34,14 @@ model User {
 }
 
 model Product {
-  id Int @id @default(autoincrement())
+  id String @id @default(uuid())
   product_name String 
   price Int @default(0)
   description String 
   picture String
   stock Int @default(0)
   username_admin String
-  category_id Int
+  category_id String
   admin Admin @relation(fields: [username_admin], references: [username])
   category Category @relation(fields: [category_id], references: [id])
   Cart Cart[]
@@ -50,7 +50,7 @@ model Product {
 }
 
 model Category {
-  id Int @id @default(autoincrement())
+  id String @id @default(uuid())
   category_name String @db.VarChar(40)
   product Product[] 
 
@@ -58,10 +58,10 @@ model Category {
 }
 
 model Cart {
-  id Int @id @default(autoincrement())
+  id String @id @default(uuid())
   total_price Int @default(0)
   username_user String
-  product_id Int
+  product_id String
   user User @relation(fields: [username_user], references: [username])
   product Product @relation(fields: [product_id], references: [id])
   order Order[]
@@ -70,11 +70,11 @@ model Cart {
 }
 
 model Order {
-  id Int @id @default(autoincrement())
+  id String @id @default(uuid())
   proof String @db.VarChar(20)
   status String @db.VarChar(20)
   username_user String
-  cart_id Int @unique
+  cart_id String @unique
   user User @relation(fields: [username_user], references: [username])
   cart Cart @relation(fields: [cart_id], references: [id])
   report Report?
@@ -83,10 +83,10 @@ model Order {
 }
 
 model Report {
-  id Int @id @default(autoincrement())
+  id String @id @default(uuid())
   date DateTime @db.DateTime() @default(now())
   username_admin String 
-  order_id Int @unique
+  order_id String @unique
   admin Admin @relation(fields: [username_admin], references: [username])
   order Order @relation(fields: [order_id], references: [id])
 
