@@ -16,4 +16,16 @@ async function createCategory(req, res, next) {
   }
 }
 
-module.exports = { createCategory };
+async function getAllCategory(req, res, next) {
+  try {
+    const allCategory = await CategoryService.getAllCategory()
+    res.status(200).json({
+      message: "get list of category success",
+      data: {allCategory}
+    })
+  } catch (error) {
+    next(error)
+  }
+}
+
+module.exports = { createCategory, getAllCategory };

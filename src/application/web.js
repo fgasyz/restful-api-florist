@@ -3,6 +3,7 @@ const fileUpload = require("express-fileupload")
 const errorMiddleware = require("../middleware/ErrorMiddleware.js")
 const authRouter = require("../router/authRouter.js")
 const privateRouter = require("../router/privateRouter.js")
+const publicRouter = require("../router/publicRouter.js")
 
 const web = express()
 
@@ -13,6 +14,7 @@ web.use(fileUpload({useTempFiles: true, debug: true, abortOnLimit: true}))
 
 web.use(authRouter)
 web.use(privateRouter)
+web.use(publicRouter)
 
 web.use(errorMiddleware)
 

@@ -12,4 +12,9 @@ async function createCategory(request) {
     return category
 }
 
-module.exports = {createCategory}
+async function getAllCategory() {
+    const allCategory = await prismaClient.$queryRaw`SELECT * FROM category`;
+    return allCategory
+}
+
+module.exports = {createCategory, getAllCategory}
