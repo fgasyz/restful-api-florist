@@ -6,11 +6,10 @@ const {
 const validation = require("../validation/validation.js");
 
 async function createProduct(request, admin, picture) {
-
   const productValidation = validation(createProductValidation, request);
   productValidation.username_admin = admin;
 
-  let newPictureName = picture.name.replace(/\s/g, '')
+  let newPictureName = picture.name.replace(/\s/g, "");
 
   const uploadFolder = __dirname + "/../uploads/" + newPictureName;
   picture.mv(uploadFolder, (err) => {
@@ -52,4 +51,9 @@ async function createProduct(request, admin, picture) {
   return { category, product };
 }
 
-module.exports = { createProduct };
+async function getAllProduct() {
+  const allProduct = await prismaClient.$queryRaw`SELECT * FROM product`;
+  return allProduct;
+}
+
+module.exports = { createProduct, getAllProduct };

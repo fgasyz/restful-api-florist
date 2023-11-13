@@ -17,5 +17,16 @@ async function createProduct(req, res, next) {
     }
 }
 
-module.exports = {createProduct}
+async function getAllProduct(req, res, next) {
+    try {
+        const allProduct = await ProductService.getAllProduct()
+        res.status(200).json({
+            data: {allProduct}
+        })
+    } catch (error) {
+        next(error)
+    }
+}
+
+module.exports = {createProduct, getAllProduct}
 
