@@ -38,4 +38,16 @@ async function generateRefreshTokenForLogin(req, res, next) {
   }
 }
 
-module.exports = { registerUser, loginUser, generateRefreshTokenForLogin };
+async function deleteUser(req, res, next) {
+  try {
+    const user = req.JWT.user
+    await UserService.deleteUser(user)
+    res.status(200).json({
+      message: "delete user success"
+    })
+  } catch (error) {
+    next(error)
+  }
+}
+
+module.exports = { registerUser, loginUser, generateRefreshTokenForLogin, deleteUser };

@@ -3,6 +3,7 @@ const {
   createUserValidation,
   loginUserValidation,
   refreshTokenValidation,
+  deleteUserValidation,
 } = require("../validation/userValidation.js");
 const bcrypt = require("bcrypt");
 const prismaClient = require("../application/database.js");
@@ -11,6 +12,7 @@ const {
   generateAcccessToken,
   generateRefreshToken,
   verifyRefreshToken,
+  verifyAccessToken,
 } = require("../utils/token.js");
 
 async function registerUser(request) {
@@ -81,4 +83,10 @@ async function generateRefreshTokenForLogin(requestToken) {
   return { data, accessToken };
 }
 
-module.exports = { registerUser, loginUser, generateRefreshTokenForLogin };
+async function deleteUser(user) {
+  await prismaClient.user.delete({
+    where: { username: user }
+  })
+}
+
+module.exports = { registerUser, loginUser, generateRefreshTokenForLogin, deleteUser };

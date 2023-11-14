@@ -13,4 +13,6 @@ const loginUserValidation = Joi.object({
 
 const refreshTokenValidation = Joi.string().required()
 
-module.exports = {createUserValidation, loginUserValidation, refreshTokenValidation}
+const deleteUserValidation = Joi.string().required()
+
+module.exports = {createUserValidation, loginUserValidation, refreshTokenValidation, deleteUserValidation}
