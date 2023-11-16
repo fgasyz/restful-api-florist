@@ -28,4 +28,16 @@ async function getAllCategory(req, res, next) {
   }
 }
 
-module.exports = { createCategory, getAllCategory };
+async function getCategoryById(req, res, next) {
+  try {
+    const category = await CategoryService.getCategoryById(req.params)
+    res.status(200).json({
+      message: "get category by id success",
+      data: {category}
+    })
+  } catch (error) {
+    next(error)
+  } 
+}
+
+module.exports = { createCategory, getAllCategory, getCategoryById };

@@ -1,5 +1,5 @@
 const prismaClient = require("../application/database.js")
-const { createCategoryValidation } = require("../validation/categoryValidation.js")
+const { createCategoryValidation, getCategoryValidation } = require("../validation/categoryValidation.js")
 const validation = require("../validation/validation.js")
 
 async function createCategory(request) {
@@ -17,4 +17,14 @@ async function getAllCategory() {
     return allCategory
 }
 
-module.exports = {createCategory, getAllCategory}
+async function getCategoryById(request) {
+    const categoryValidation = validation(getCategoryValidation, request.categoryId)
+    const category = await prismaClient.category.findUnique({
+        where: {
+            id: categoryValidation
+        }
+    })
+    return category
+}
+
+module.exports = {createCategory, getAllCategory, getCategoryById}

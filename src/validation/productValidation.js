@@ -9,4 +9,6 @@ const createProductValidation = Joi.object({
     category_id: Joi.string().required()
 })
 
-module.exports = {createProductValidation}
+const getProductValidation = Joi.string().required()
+
+module.exports = {createProductValidation, getProductValidation}

@@ -26,6 +26,7 @@ async function getAllProduct(req, res, next) {
   try {
     const allProduct = await ProductService.getAllProduct();
     res.status(200).json({
+      message: "get list of product success",
       data: { allProduct },
     });
   } catch (error) {
@@ -33,4 +34,16 @@ async function getAllProduct(req, res, next) {
   }
 }
 
-module.exports = { createProduct, getAllProduct };
+async function getProductById(req, res, next) {
+  try {
+    const product = await ProductService.getProductById(req.params);
+    res.status(200).json({
+      data: { product },
+    });
+  } catch (error) {
+    next(error);
+  }
+}
+
+
+module.exports = { createProduct, getAllProduct, getProductById };

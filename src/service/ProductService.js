@@ -1,7 +1,7 @@
 const prismaClient = require("../application/database.js");
 const ClientError = require("../exceptions/ClientError.js");
 const {
-  createProductValidation,
+  createProductValidation, getProductValidation,
 } = require("../validation/productValidation.js");
 const validation = require("../validation/validation.js");
 
@@ -56,4 +56,14 @@ async function getAllProduct() {
   return allProduct;
 }
 
-module.exports = { createProduct, getAllProduct };
+async function getProductById(request) {
+  const productValidation = validation(getProductValidation, request.productId)
+  const category = await prismaClient.product.findUnique({
+    where: {
+      id: productValidation
+    }
+  })
+  return category
+}
+
+module.exports = { createProduct, getAllProduct, getProductById };
