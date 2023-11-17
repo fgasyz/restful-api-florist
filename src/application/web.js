@@ -4,10 +4,13 @@ const errorMiddleware = require("../middleware/ErrorMiddleware.js")
 const authRouter = require("../router/authRouter.js")
 const privateRouter = require("../router/privateRouter.js")
 const publicRouter = require("../router/publicRouter.js")
+const cors = require("cors")
 
 const web = express()
 
-web.use('/uploads', express.static(__dirname + '/../uploads'))
+web.use(cors())
+
+web.use('/uploads', express.static(__dirname + "/../uploads"))
 
 web.use(express.json())
 web.use(fileUpload({useTempFiles: true, debug: true, abortOnLimit: true}))
