@@ -12,12 +12,22 @@ privateRouter.post(
   authMiddleware,
   CategoryController.createCategory
 );
+privateRouter.post(
+  "/delete-category/:categoryId",
+  authMiddleware,
+  CategoryController.createCategory
+);
 
 //product
 privateRouter.post(
   "/create-product",
   authMiddleware,
   ProductController.createProduct
+);
+privateRouter.delete(
+  "/delete-product/:productId",
+  authMiddleware,
+  ProductController.deleteProductById
 );
 
 //cart
@@ -28,7 +38,7 @@ privateRouter.post(
 );
 privateRouter.get("/carts", authMiddleware, CartController.getCart);
 privateRouter.delete(
-  "/delete-carts/:cartId/products/:productId",
+  "/delete-carts/:cartId",
   authMiddleware,
   CartController.deleteCart
 );

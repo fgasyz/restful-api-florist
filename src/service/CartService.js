@@ -57,17 +57,11 @@ async function getCart(user) {
 }
 
 async function deleteCart(request, user) {
-  const cartValidation = validation(deleteCartValidation, request);
-  const product = await prismaClient.product.findUnique({
-    where: { id: cartValidation.productId },
-  });
+  const cartValidation = validation(deleteCartValidation, request.cartId);
   await prismaClient.cart.delete({
     where: {
-      id: cartValidation.cartId,
+      id: cartValidation,
       username_user: user,
-      AND: {
-        product_id: product.id,
-      },
     },
   });
 }

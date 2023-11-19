@@ -11,7 +11,10 @@ const createProductValidation = Joi.object({
 
 const getProductValidation = Joi.string().required();
 
+const deleteProductValidation = Joi.string().required();
+
 module.exports = {
   createProductValidation,
   getProductValidation,
+  deleteProductValidation,
 };

@@ -3,6 +3,7 @@ const ClientError = require("../exceptions/ClientError.js");
 const {
   createProductValidation,
   getProductValidation,
+  deleteProductValidation,
 } = require("../validation/productValidation.js");
 const validation = require("../validation/validation.js");
 
@@ -67,8 +68,21 @@ async function getProductById(request) {
   return category;
 }
 
+async function deleteProductById(request) {
+  const productValidation = validation(
+    deleteProductValidation,
+    request.productId
+  );
+  await prismaClient.product.delete({
+    where: {
+      id: productValidation,
+    },
+  });
+}
+
 module.exports = {
   createProduct,
   getAllProduct,
   getProductById,
+  deleteProductById,
 };

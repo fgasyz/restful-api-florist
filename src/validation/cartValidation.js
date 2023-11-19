@@ -10,10 +10,7 @@ const getCartValidation = Joi.object({
   productId: Joi.string().required(),
 });
 
-const deleteCartValidation = Joi.object({
-  productId: Joi.string().required(),
-  cartId: Joi.string().required(),
-});
+const deleteCartValidation = Joi.string().required();
 
 module.exports = {
   createCartValidation,

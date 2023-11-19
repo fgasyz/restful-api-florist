@@ -43,4 +43,22 @@ async function getCategoryById(req, res, next) {
   }
 }
 
-module.exports = { createCategory, getAllCategory, getCategoryById };
+async function deleteCategoryById(req, res, next) {
+  try {
+    if (req.JWT.role !== "admin")
+      throw new AuthorizationError("not authorized");
+    await CategoryService.deleteCategoryById(req.params);
+    res.status(200).json({
+      message: "delete category success",
+    });
+  } catch (error) {
+    next(error);
+  }
+}
+
+module.exports = {
+  createCategory,
+  getAllCategory,
+  getCategoryById,
+  deleteCategoryById,
+};

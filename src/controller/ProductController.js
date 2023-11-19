@@ -48,8 +48,21 @@ async function getProductById(req, res, next) {
   }
 }
 
+async function deleteProductById(req, res, next) {
+  try {
+    if (req.JWT.role != "admin") throw new AuthorizationError("not authorized");
+    await ProductService.deleteProductById(req.params);
+    res.status(200).json({
+      message: "delete product success",
+    });
+  } catch (error) {
+    next(error);
+  }
+}
+
 module.exports = {
   createProduct,
   getAllProduct,
   getProductById,
+  deleteProductById,
 };
