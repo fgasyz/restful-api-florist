@@ -1,8 +1,11 @@
+const AuthorizationError = require("../exceptions/AuthorizationError.js");
 const ClientError = require("../exceptions/ClientError.js");
 const ProductService = require("../service/ProductService.js");
 
 async function createProduct(req, res, next) {
   try {
+    if (req.JWT.role !== "admin")
+      throw new AuthorizationError("not authorized");
     const admin = req.JWT.admin;
     if (!req.files.picture) throw new ClientError("no product images uploaded");
     if (req.files.picture.mimetype !== "image/jpeg")

@@ -2,6 +2,7 @@ const CartService = require("../service/CartService.js");
 
 async function createCart(req, res, next) {
   try {
+    if (req.JWT.role !== "user") throw new AuthorizationError("not authorized");
     const { user } = req.JWT;
     const { productId } = req.params;
     const cart = await CartService.createCart(req.body, user, productId);
@@ -16,6 +17,7 @@ async function createCart(req, res, next) {
 
 async function getCart(req, res, next) {
   try {
+    if (req.JWT.role !== "user") throw new AuthorizationError("not authorized");
     const { user } = req.JWT;
     const carts = await CartService.getCart(user);
     res.status(200).json({
@@ -29,6 +31,7 @@ async function getCart(req, res, next) {
 
 async function deleteCart(req, res, next) {
   try {
+    if (req.JWT.role !== "user") throw new AuthorizationError("not authorized");
     const { user } = req.JWT;
     await CartService.deleteCart(req.params, user);
     res.status(200).json({

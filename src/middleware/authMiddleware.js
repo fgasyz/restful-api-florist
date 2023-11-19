@@ -1,23 +1,23 @@
 const AuthorizationError = require("../exceptions/AuthorizationError.js");
 const jsonwebtoken = require("jsonwebtoken");
 const env = require("dotenv").config().parsed;
+const prismaClient = require("../application/database.js");
 
-const adminAuthMiddleWare = (req, res, next) => {
+const adminAuthMiddleWare = async (req, res, next) => {
   if (req.get("Authorization")) {
     const header = req.get("Authorization").split(" ")[1];
     jsonwebtoken.verify(header, env.ACCESS_TOKEN_SECRET_KEY, (err, data) => {
       if (err) {
-        throw err;
+        res.status(500).json({ error: err.message });
+        return;
       }
       req.JWT = data;
-      if(data.role == "admin") {
-        next();
-      }else {
-        res.status(403).end()
-      }
+      next();
     });
   } else {
-    throw new AuthorizationError("Unauthorized");
+    res
+      .status(403)
+      .json({ error: new AuthorizationError("Unauthorized").message });
   }
 };
 
