@@ -6,7 +6,7 @@ const createProductValidation = Joi.object({
   description: Joi.string().required(),
   picture: Joi.string().required(),
   stock: Joi.number().required(),
-  category_id: Joi.string().required(),
+  category_id: Joi.string().optional(),
 });
 
 const getProductValidation = Joi.string().required();

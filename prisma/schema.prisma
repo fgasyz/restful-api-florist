@@ -34,25 +34,23 @@ model User {
 }
 
 model Product {
-  id             String   @id @default(uuid())
+  id             String  @id @default(uuid())
   product_name   String
-  price          Int      @default(0)
+  price          Int     @default(0)
   description    String
   picture        String
-  stock          Int      @default(0)
+  stock          Int     @default(0)
   username_admin String
-  category_id    String
-  admin          Admin    @relation(fields: [username_admin], references: [username], onUpdate: Cascade, onDelete: Cascade)
-  category       Category @relation(fields: [category_id], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  category_id    String?
+  admin          Admin   @relation(fields: [username_admin], references: [username], onUpdate: Cascade, onDelete: Cascade)
   Cart           Cart[]
 
   @@map("product")
 }
 
 model Category {
-  id            String    @id @default(uuid())
-  category_name String    @db.VarChar(40)
-  product       Product[]
+  id            String @id @default(uuid())
+  category_name String @db.VarChar(40)
 
   @@map("category")
 }
@@ -64,7 +62,6 @@ model Cart {
   product_id    String
   user          User    @relation(fields: [username_user], references: [username], onUpdate: Cascade, onDelete: Cascade)
   product       Product @relation(fields: [product_id], references: [id], onUpdate: Cascade, onDelete: Cascade)
-  order         Order[]
 
   @@map("cart")
 }
@@ -74,9 +71,8 @@ model Order {
   proof         String  @db.VarChar(20)
   status        String  @db.VarChar(20)
   username_user String
-  cart_id       String  @unique
+  cart_id       String
   user          User    @relation(fields: [username_user], references: [username], onUpdate: Cascade, onDelete: Cascade)
-  cart          Cart    @relation(fields: [cart_id], references: [id], onUpdate: Cascade, onDelete: Cascade)
   report        Report?
 
   @@map("order")

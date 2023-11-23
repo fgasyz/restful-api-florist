@@ -18,39 +18,26 @@ async function createProduct(request, admin, picture) {
     if (err) throw new ClientError("upload file is failed");
   });
 
-  const [category, product] = await prismaClient.$transaction(
-    async (prisma) => {
-      const category = await prisma.category.findFirst({
-        where: {
-          id: productValidation.category_id,
-        },
-      });
+  const product = await prismaClient.product.create({
+    data: {
+      product_name: productValidation.product_name,
+      price: productValidation.price,
+      description: productValidation.description,
+      picture: uploadFolder,
+      stock: productValidation.stock,
+      username_admin: productValidation.username_admin,
+    },
+    select: {
+      id: true,
+      product_name: true,
+      price: true,
+      description: true,
+      picture: true,
+      stock: true,
+    },
+  });
 
-      const product = await prisma.product.create({
-        data: {
-          product_name: productValidation.product_name,
-          price: productValidation.price,
-          description: productValidation.description,
-          picture: uploadFolder,
-          stock: productValidation.stock,
-          username_admin: productValidation.username_admin,
-          category_id: category.id,
-        },
-        select: {
-          id: true,
-          product_name: true,
-          price: true,
-          description: true,
-          picture: true,
-          stock: true,
-        },
-      });
-
-      return [category.category_name, product];
-    }
-  );
-
-  return { category, product };
+  return [product];
 }
 
 async function getAllProduct() {

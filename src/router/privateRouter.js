@@ -12,10 +12,10 @@ privateRouter.post(
   authMiddleware,
   CategoryController.createCategory
 );
-privateRouter.post(
-  "/delete-category/:categoryId",
+privateRouter.delete(
+  "/delete-categories/:categoryId",
   authMiddleware,
-  CategoryController.createCategory
+  CategoryController.deleteCategoryById
 );
 
 //product
