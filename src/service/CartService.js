@@ -6,14 +6,10 @@ const {
 } = require("../validation/cartValidation.js");
 const validation = require("../validation/validation.js");
 
-async function createCart(request, user, productId) {
-  const payload = {
-    product_id: productId,
-    total_price: request.total_price,
-  };
-  const cartValidate = validation(createCartValidation, payload);
+async function createCart(user, productId) {
+  const cartValidate = validation(createCartValidation, productId);
   const product = await prismaClient.product.findUnique({
-    where: { id: cartValidate.product_id },
+    where: { id: cartValidate },
   });
   const cart = await prismaClient.cart.create({
     data: {

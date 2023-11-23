@@ -4,7 +4,7 @@ const AuthorizationError = require("../exceptions/AuthorizationError.js");
 async function createCategory(req, res, next) {
   try {
     if (req.JWT.role !== "admin")
-      throw new AuthorizationError("not authorized");
+      throw new AuthorizationError("user cannot be access");
     const admin = req.JWT.admin;
     const category = await CategoryService.createCategory(req.body);
     res.status(201).json({

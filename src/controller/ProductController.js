@@ -5,7 +5,7 @@ const ProductService = require("../service/ProductService.js");
 async function createProduct(req, res, next) {
   try {
     if (req.JWT.role !== "admin")
-      throw new AuthorizationError("not authorized");
+      throw new AuthorizationError("user cannot be access");
     const admin = req.JWT.admin;
     if (!req.files.picture) throw new ClientError("no product images uploaded");
     if (req.files.picture.mimetype !== "image/jpeg")
@@ -50,7 +50,8 @@ async function getProductById(req, res, next) {
 
 async function deleteProductById(req, res, next) {
   try {
-    if (req.JWT.role != "admin") throw new AuthorizationError("not authorized");
+    if (req.JWT.role != "admin")
+      throw new AuthorizationError("user cannot be access");
     await ProductService.deleteProductById(req.params);
     res.status(200).json({
       message: "delete product success",

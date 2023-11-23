@@ -25,7 +25,7 @@ privateRouter.post(
   ProductController.createProduct
 );
 privateRouter.delete(
-  "/delete-product/:productId",
+  "/delete-products/:productId",
   authMiddleware,
   ProductController.deleteProductById
 );

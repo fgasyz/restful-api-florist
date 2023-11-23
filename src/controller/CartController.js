@@ -5,7 +5,7 @@ async function createCart(req, res, next) {
     if (req.JWT.role !== "user") throw new AuthorizationError("not authorized");
     const { user } = req.JWT;
     const { productId } = req.params;
-    const cart = await CartService.createCart(req.body, user, productId);
+    const cart = await CartService.createCart(user, productId);
     res.status(201).json({
       message: "create cart success",
       data: { cart },
