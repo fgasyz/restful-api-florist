@@ -1,6 +1,11 @@
 const Joi = require("joi");
 
-const createCartValidation = Joi.string().required();
+const createCartValidation = Joi.array().items(
+  Joi.object({
+    productId: Joi.string().required(),
+    qty: Joi.number().min(1).required(),
+  })
+);
 
 const getCartValidation = Joi.object({
   cartId: Joi.string().required(),

@@ -11,10 +11,9 @@ datasource db {
 }
 
 model Admin {
-  username      String    @id
-  no_hp         String    @db.VarChar(13)
+  username      String   @id
+  no_hp         String   @db.VarChar(13)
   password      String
-  product       Product[]
   report        Report[]
   refresh_token String?
 
@@ -34,16 +33,14 @@ model User {
 }
 
 model Product {
-  id             String  @id @default(uuid())
-  product_name   String
-  price          Int     @default(0)
-  description    String
-  picture        String
-  stock          Int     @default(0)
-  username_admin String
-  category_id    String?
-  admin          Admin   @relation(fields: [username_admin], references: [username], onUpdate: Cascade, onDelete: Cascade)
-  Cart           Cart[]
+  id           String  @id @default(uuid())
+  product_name String
+  price        Int     @default(0)
+  description  String
+  picture      String
+  stock        Int     @default(0)
+  category_id  String?
+  Cart         Cart[]
 
   @@map("product")
 }
@@ -57,22 +54,25 @@ model Category {
 
 model Cart {
   id            String  @id @default(uuid())
-  total_price   Int     @default(0)
   username_user String
   product_id    String
+  qty           Int     @default(1)
+  total_price   Int     @default(0)
   user          User    @relation(fields: [username_user], references: [username], onUpdate: Cascade, onDelete: Cascade)
   product       Product @relation(fields: [product_id], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  order         Order?
 
   @@map("cart")
 }
 
 model Order {
   id            String  @id @default(uuid())
-  proof         String  @db.VarChar(20)
-  status        Status  @default(kosong)
+  invoice       String  @default("null")
+  status        Status  @default(menunggu)
   username_user String
-  cart_id       String
+  cart_id       String  @unique
   user          User    @relation(fields: [username_user], references: [username], onUpdate: Cascade, onDelete: Cascade)
+  cart          Cart    @relation(fields: [cart_id], references: [id], onUpdate: Cascade, onDelete: Cascade)
   report        Report?
 
   @@map("order")
@@ -90,7 +90,6 @@ model Report {
 }
 
 enum Status {
-  kosong
   ditolak
   menunggu
   selesai

@@ -11,11 +11,7 @@ async function createProduct(req, res, next) {
     if (req.files.picture.mimetype !== "image/jpeg")
       throw new ClientError("mimetype is wrong");
     const picture = req.files.picture;
-    const product = await ProductService.createProduct(
-      req.body,
-      admin,
-      picture
-    );
+    const product = await ProductService.createProduct(req.body, picture);
     res.status(201).json({
       message: "create product success",
       data: product,

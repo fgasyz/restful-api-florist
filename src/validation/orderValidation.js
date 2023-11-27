@@ -1,9 +1,7 @@
 const Joi = require("joi");
 
 const createOrderValidation = Joi.object({
-  proof: Joi.string().required(),
-  username_user: Joi.string().required(),
-  cart_Id: Joi.string().required(),
+  cartId: Joi.array().required(),
 });
 
 const getOrderValidation = Joi.string().required();

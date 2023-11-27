@@ -2,6 +2,7 @@ const express = require("express");
 const CategoryController = require("../controller/CategoryController.js");
 const ProductController = require("../controller/ProductController.js");
 const CartController = require("../controller/CartController.js");
+const OrderController = require("../controller/OrderController.js");
 const authMiddleware = require("../middleware/authMiddleware.js");
 
 const privateRouter = express.Router();
@@ -31,16 +32,19 @@ privateRouter.delete(
 );
 
 //cart
-privateRouter.post(
-  "/create-cart/products/:productId",
-  authMiddleware,
-  CartController.createCart
-);
+privateRouter.post("/create-cart", authMiddleware, CartController.createCart);
 privateRouter.get("/carts", authMiddleware, CartController.getCart);
 privateRouter.delete(
   "/delete-carts/:cartId",
   authMiddleware,
   CartController.deleteCart
+);
+
+//order
+privateRouter.post(
+  "/create-order",
+  authMiddleware,
+  OrderController.createOrder
 );
 
 module.exports = privateRouter;

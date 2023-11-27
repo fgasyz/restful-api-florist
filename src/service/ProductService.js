@@ -7,10 +7,8 @@ const {
 } = require("../validation/productValidation.js");
 const validation = require("../validation/validation.js");
 
-async function createProduct(request, admin, picture) {
+async function createProduct(request, picture) {
   const productValidation = validation(createProductValidation, request);
-  productValidation.username_admin = admin;
-
   let newPictureName = picture.name.replace(/\s/g, "");
 
   const uploadFolder = __dirname + "/../uploads/" + newPictureName;
@@ -25,7 +23,6 @@ async function createProduct(request, admin, picture) {
       description: productValidation.description,
       picture: uploadFolder,
       stock: productValidation.stock,
-      username_admin: productValidation.username_admin,
     },
     select: {
       id: true,
