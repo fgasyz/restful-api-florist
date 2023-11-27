@@ -6,6 +6,7 @@ const {
 const validation = require("../validation/validation.js");
 const NotFoundError = require("../exceptions/NotFoundError.js");
 const ClientError = require("../exceptions/ClientError.js");
+const InvariantError = require("../exceptions/InvariantError.js");
 
 async function createCart(request, user) {
   const cartValidate = validation(createCartValidation, request);
@@ -18,15 +19,23 @@ async function createCart(request, user) {
     });
     if (!product) {
       throw new NotFoundError(
-        `product with id ${cartValidate[i].product_id} is not found`
+        `product with id '${cartValidate[i].product_id}' is not found`
       );
     }
-    cart = await prismaClient.cart.findUnique({
-      where: { product_id: cartValidate[i].product_id },
+    if (product.stock < 1) {
+      throw new InvariantError(
+        `product with id '${cartValidate[i].product_id}'currently out of stock`
+      );
+    }
+    cart = await prismaClient.cart.findFirst({
+      where: {
+        product_id: cartValidate[i].product_id,
+        AND: { username_user: user },
+      },
     });
     if (cart) {
       throw new ClientError(
-        `product with id ${cartValidate[i].product_id} is found`
+        `product with id '${cartValidate[i].product_id}' is already exist in a cart`
       );
     }
     cartValidate[i].total_price = product.price * cartValidate[i].qty;
@@ -53,6 +62,7 @@ async function getCart(user) {
   const totalPrice = await prismaClient.cart.groupBy({
     by: ["product_id"],
     _sum: { total_price: true },
+    where: { username_user: user },
   });
 
   return { allCart, totalPrice };

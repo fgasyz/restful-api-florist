@@ -20,7 +20,7 @@ async function createCategory(request) {
 }
 
 async function getAllCategory() {
-  const allCategory = await prismaClient.$queryRaw`SELECT * FROM category`;
+  const allCategory = await prismaClient.category.findMany();
   return allCategory;
 }
 

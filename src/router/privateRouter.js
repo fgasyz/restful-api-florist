@@ -46,5 +46,11 @@ privateRouter.post(
   authMiddleware,
   OrderController.createOrder
 );
+privateRouter.get("/order", authMiddleware, OrderController.getOrder);
+privateRouter.delete(
+  "/delete-order/:orderId",
+  authMiddleware,
+  OrderController.deleteOrder
+);
 
 module.exports = privateRouter;
