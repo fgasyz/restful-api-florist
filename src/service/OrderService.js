@@ -11,34 +11,41 @@ const ClientError = require("../exceptions/ClientError.js");
 async function createOrder(request, user) {
   const orderValidation = validation(createOrderValidation, request);
   let cart, order, product;
-  cart = await prismaClient.cart.findMany({ where: { username_user: user } });
-  if (orderValidation.length != cart.length) {
-    throw new ClientError("cart length is not match");
-  }
+
   for (let i = 0; i < orderValidation.length; i++) {
-    cart = await prismaClient.cart.findFirst({
-      where: { id: orderValidation[i].cart_id, AND: { username_user: user } },
-    });
+    orderValidation[i].username_user = user;
+
+    cart = await prismaClient.cart.findMany({ where: { username_user: user } });
+
+    if (orderValidation.length != cart.length) {
+      throw new ClientError("cart length is not match");
+    }
     if (!cart) {
-      throw new NotFoundError(
-        `cart id '${orderValidation[i].cart_id}' is not found`
+      throw new NotFoundError(`user doesn't have cart`);
+    }
+
+    product = await prismaClient.product.findUnique({
+      where: { id: cart[i].product_id },
+    });
+
+    if (!product) {
+      throw new ClientError(
+        `product with id '${cart[i].product_id}' is not found`
       );
     }
-    product = await prismaClient.product.findUnique({
-      where: { id: cart.product_id },
-    });
-    await prismaClient.product.update({
-      where: { id: cart.product_id },
+
+    await prismaClient.product.updateMany({
+      where: { id: product.id },
       data: {
-        stock: product.stock - cart.qty,
+        stock: product.stock - cart[i].qty,
       },
     });
-    orderValidation[i].username_user = user;
+
     order = await prismaClient.order.createMany({
       data: [orderValidation[i]],
     });
-    return order;
   }
+  return order;
 }
 
 async function getOrder(user) {
@@ -46,7 +53,6 @@ async function getOrder(user) {
     where: { username_user: user },
     select: {
       id: true,
-      invoice: true,
       status: true,
       username_user: true,
     },

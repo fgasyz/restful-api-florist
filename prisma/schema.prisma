@@ -60,22 +60,26 @@ model Cart {
   total_price   Int     @default(0)
   user          User    @relation(fields: [username_user], references: [username], onUpdate: Cascade, onDelete: Cascade)
   product       Product @relation(fields: [product_id], references: [id], onUpdate: Cascade, onDelete: Cascade)
-  order         Order?
 
   @@map("cart")
 }
 
 model Order {
   id            String  @id @default(uuid())
-  invoice       String  @default("null")
   status        Status  @default(menunggu)
   username_user String
   cart_id       String  @unique
   user          User    @relation(fields: [username_user], references: [username], onUpdate: Cascade, onDelete: Cascade)
-  cart          Cart    @relation(fields: [cart_id], references: [id], onUpdate: Cascade, onDelete: Cascade)
   report        Report?
 
   @@map("order")
+}
+
+model Invoice {
+  id               String @id @default(uuid())
+  invoice_document String
+
+  @@map("invoice")
 }
 
 model Report {
