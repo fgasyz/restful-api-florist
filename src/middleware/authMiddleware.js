@@ -11,8 +11,14 @@ const adminAuthMiddleWare = async (req, res, next) => {
         res.status(500).json({ error: err.message });
         return;
       }
-      req.JWT = data;
-      next();
+      if (data.role == "admin") {
+        req.JWT = data;
+        next();
+      }
+      if (data.role == "user") {
+        req.JWT = data;
+        next();
+      }
     });
   } else {
     res

@@ -3,8 +3,8 @@ const AuthorizationError = require("../exceptions/AuthorizationError.js");
 
 async function createOrder(req, res, next) {
   try {
-    if (req.JWT.role !== "user")
-      throw new AuthorizationError("user cannot be access");
+    // if (req.JWT.role !== "user")
+    //   throw new AuthorizationError("user cannot be access");
     const order = await OrderService.createOrder(req.body, req.JWT.user);
     res.json({
       message: "create order success",
@@ -16,8 +16,6 @@ async function createOrder(req, res, next) {
 
 async function getOrder(req, res, next) {
   try {
-    if (req.JWT.role !== "user")
-      throw new AuthorizationError("user cannot be access");
     const order = await OrderService.getOrder(req.JWT.user);
     res.json({
       message: "get order success",
@@ -30,8 +28,6 @@ async function getOrder(req, res, next) {
 
 async function deleteOrder(req, res, next) {
   try {
-    if (req.JWT.role !== "admin")
-      throw new AuthorizationError("user cannot be access");
     await OrderService.deleteOrder(req.params, req.JWT.admin);
     res.json({
       message: "delete order success",

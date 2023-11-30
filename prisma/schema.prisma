@@ -21,12 +21,13 @@ model Admin {
 }
 
 model User {
-  username      String  @id
-  no_hp         String  @db.VarChar(13)
-  alamat        String? @db.Text()
+  username      String    @id
+  no_hp         String    @db.VarChar(13)
+  alamat        String?   @db.Text()
   password      String
   cart          Cart[]
   order         Order[]
+  invoice       Invoice[]
   refresh_token String?
 
   @@map("user")
@@ -76,8 +77,11 @@ model Order {
 }
 
 model Invoice {
-  id               String @id @default(uuid())
-  invoice_document String
+  id               Int      @id @default(autoincrement())
+  date             DateTime @default(now()) @db.DateTime()
+  invoice_document String   @default("null")
+  username_user    String
+  user             User     @relation(fields: [username_user], references: [username], onUpdate: Cascade, onDelete: Cascade)
 
   @@map("invoice")
 }

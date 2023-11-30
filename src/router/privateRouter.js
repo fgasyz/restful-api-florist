@@ -3,6 +3,9 @@ const CategoryController = require("../controller/CategoryController.js");
 const ProductController = require("../controller/ProductController.js");
 const CartController = require("../controller/CartController.js");
 const OrderController = require("../controller/OrderController.js");
+const InvoiceController = require("../controller/InvoiceController.js");
+const ReportController = require("../controller/ReportController.js");
+
 const authMiddleware = require("../middleware/authMiddleware.js");
 
 const privateRouter = express.Router();
@@ -51,6 +54,32 @@ privateRouter.delete(
   "/delete-order/:orderId",
   authMiddleware,
   OrderController.deleteOrder
+);
+
+//invoice
+privateRouter.post(
+  "/create-invoice",
+  authMiddleware,
+  InvoiceController.createInvoice
+);
+privateRouter.get("/invoices", authMiddleware, InvoiceController.getAllInvoice);
+privateRouter.get(
+  "/download-invoice/:invoiceId",
+  authMiddleware,
+  InvoiceController.downloadInvoice
+);
+
+//report
+privateRouter.post(
+  "/create-report",
+  authMiddleware,
+  ReportController.createReport
+);
+privateRouter.get("/reports", authMiddleware, ReportController.getReport);
+privateRouter.delete(
+  "/reports/:reportId",
+  authMiddleware,
+  ReportController.deleteReport
 );
 
 module.exports = privateRouter;

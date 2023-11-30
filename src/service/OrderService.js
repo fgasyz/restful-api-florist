@@ -17,13 +17,6 @@ async function createOrder(request, user) {
 
     cart = await prismaClient.cart.findMany({ where: { username_user: user } });
 
-    if (orderValidation.length != cart.length) {
-      throw new ClientError("cart length is not match");
-    }
-    if (!cart) {
-      throw new NotFoundError(`user doesn't have cart`);
-    }
-
     product = await prismaClient.product.findUnique({
       where: { id: cart[i].product_id },
     });
@@ -34,12 +27,12 @@ async function createOrder(request, user) {
       );
     }
 
-    await prismaClient.product.updateMany({
-      where: { id: product.id },
-      data: {
-        stock: product.stock - cart[i].qty,
-      },
-    });
+    // await prismaClient.product.updateMany({
+    //   where: { id: product.id },
+    //   data: {
+    //     stock: product.stock - cart[i].qty,
+    //   },
+    // });
 
     order = await prismaClient.order.createMany({
       data: [orderValidation[i]],
