@@ -1,56 +1,55 @@
 const prismaClient = require("../application/database");
 const NotFoundError = require("../exceptions/NotFoundError");
+const ClientError = require("../exceptions/ClientError");
 const generateInvoice = require("../utils/generateInvoice");
 const { createInvoiceValidation } = require("../validation/invoiceValidation");
 const validation = require("../validation/validation");
 
 async function createInvoice(request, user) {
   const invoiceValidation = validation(createInvoiceValidation, request);
-  let order, cart, invoiceDetail;
+  let order, invoiceDetail;
 
   for (let i = 0; i < invoiceValidation.length; i++) {
     invoiceValidation[i].username_user = user;
 
-    order = await prismaClient.order.findMany({
-      where: { username_user: user },
+    order = await prismaClient.order.findUnique({
+      where: { id: invoiceValidation[i].order_id },
     });
 
-    if (invoiceValidation.length != order.length) {
-      throw new ClientError("order length is not match");
-    }
-
-    order = await prismaClient.order.findMany({
-      where: { username_user: user },
-    });
     if (!order) {
-      throw new NotFoundError(
-        `order with id ${invoiceValidation[i].order_id} is not found`
+      throw new ClientError(
+        `order with id '${invoiceValidation[i].order_id}' is not found`
       );
     }
-    cart = await prismaClient.cart.findMany({
-      where: { username_user: user },
-      include: {
-        product: true,
-      },
-    });
   }
 
-  console.log(cart);
+  order = await prismaClient.order.findMany({
+    where: { username_user: user },
+    include: {
+      cart: {
+        include: {
+          product: true,
+        },
+      },
+    },
+  });
 
-  let total = cart
+  if (invoiceValidation.length != order.length) {
+    throw new ClientError("order length is not match");
+  }
+
+  let total = order
     .map((item) => {
-      return item.total_price;
+      return item.cart.total_price;
     })
     .reduce((a, b) => a + b);
 
-  console.log(total);
-
-  let items = cart.map((item) => {
+  let items = order.map((item) => {
     return {
-      item: item.product.product_name,
-      description: item.product.description,
-      quantity: item.qty,
-      price: item.product.price,
+      item: item.cart.product.product_name,
+      description: item.cart.product.description,
+      quantity: item.cart.qty,
+      price: item.cart.product.price,
       tax: "0%",
     };
   });
@@ -61,11 +60,11 @@ async function createInvoice(request, user) {
     },
   });
 
-  let year = createInvoice.date.getFullYear();
-  let month = createInvoice.date.getMonth();
-  let date = createInvoice.date.getDate();
+  let year = createInvoice.date.getUTCFullYear();
+  let month = createInvoice.date.getUTCMonth();
+  let date = createInvoice.date.getUTCDate();
 
-  for (let i = 0; i < cart.length; i++) {
+  for (let i = 0; i < order.length; i++) {
     invoiceDetail = {
       shipping: {
         name: "Florist",

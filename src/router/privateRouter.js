@@ -4,7 +4,6 @@ const ProductController = require("../controller/ProductController.js");
 const CartController = require("../controller/CartController.js");
 const OrderController = require("../controller/OrderController.js");
 const InvoiceController = require("../controller/InvoiceController.js");
-const ReportController = require("../controller/ReportController.js");
 
 const authMiddleware = require("../middleware/authMiddleware.js");
 
@@ -67,19 +66,6 @@ privateRouter.get(
   "/download-invoice/:invoiceId",
   authMiddleware,
   InvoiceController.downloadInvoice
-);
-
-//report
-privateRouter.post(
-  "/create-report",
-  authMiddleware,
-  ReportController.createReport
-);
-privateRouter.get("/reports", authMiddleware, ReportController.getReport);
-privateRouter.delete(
-  "/reports/:reportId",
-  authMiddleware,
-  ReportController.deleteReport
 );
 
 module.exports = privateRouter;

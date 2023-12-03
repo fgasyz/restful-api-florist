@@ -34,30 +34,27 @@ async function registerUser(request) {
 }
 
 async function loginUser(request) {
-    const userValidation = validate(loginUserValidation, request);
-    const user = await prismaClient.user.findFirst({
-      where: { username: userValidation.username },
-    });
-    if (!user) throw new AuthenticationError("incorrect username");
-    const isMatch = await bcrypt.compare(
-      userValidation.password,
-      user.password
-    );
-    if (!isMatch) throw new AuthenticationError("incorrect password");
-    const payload = { user: user.username, role: "user" };
-    const accessToken = await generateAcccessToken(payload);
-    const refreshToken = await generateRefreshToken(payload);
-    const insertToken = await prismaClient.user.update({
-      where: {
-        username: user.username,
-      },
-      data: {
-        refresh_token: refreshToken,
-      },
-    });
-    const data = { insertToken, accessToken };
-    return data;
-  }
+  const userValidation = validate(loginUserValidation, request);
+  const user = await prismaClient.user.findFirst({
+    where: { username: userValidation.username },
+  });
+  if (!user) throw new AuthenticationError("username isn't exist");
+  const isMatch = await bcrypt.compare(userValidation.password, user.password);
+  if (!isMatch) throw new AuthenticationError("incorrect password");
+  const payload = { user: user.username, role: "user" };
+  const accessToken = await generateAcccessToken(payload);
+  const refreshToken = await generateRefreshToken(payload);
+  const insertToken = await prismaClient.user.update({
+    where: {
+      username: user.username,
+    },
+    data: {
+      refresh_token: refreshToken,
+    },
+  });
+  const data = { insertToken, accessToken };
+  return data;
+}
 
 async function generateRefreshTokenForLogin(requestToken) {
   const refreshTokenValidate = validate(
@@ -85,8 +82,13 @@ async function generateRefreshTokenForLogin(requestToken) {
 
 async function deleteUser(user) {
   await prismaClient.user.delete({
-    where: { username: user }
-  })
+    where: { username: user },
+  });
 }
 
-module.exports = { registerUser, loginUser, generateRefreshTokenForLogin, deleteUser };
+module.exports = {
+  registerUser,
+  loginUser,
+  generateRefreshTokenForLogin,
+  deleteUser,
+};

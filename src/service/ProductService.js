@@ -16,7 +16,7 @@ async function createProduct(request, picture) {
     if (err) throw new ClientError("upload file is failed");
   });
 
-  const product = await prismaClient.product.create({
+  await prismaClient.product.create({
     data: {
       product_name: productValidation.product_name,
       price: productValidation.price,
@@ -33,8 +33,6 @@ async function createProduct(request, picture) {
       stock: true,
     },
   });
-
-  return [product];
 }
 
 async function getAllProduct() {
