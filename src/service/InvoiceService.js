@@ -61,7 +61,7 @@ async function createInvoice(request, user) {
   });
 
   let year = createInvoice.date.getUTCFullYear();
-  let month = createInvoice.date.getUTCMonth();
+  let month = createInvoice.date.toLocaleString([], { month: "long" });
   let date = createInvoice.date.getUTCDate();
 
   for (let i = 0; i < order.length; i++) {
@@ -83,11 +83,12 @@ async function createInvoice(request, user) {
         company_address: "Jln. Pantai Nyiur Melambai, Manggar",
       },
       footer: {
-        text: "terima kasih telah berbelanja di toko bunga kami",
+        text: "happy shopping!!",
       },
       currency_symbol: "Rp. ",
       date: {
         billing_date: `${date} - ${month} - ${year}`,
+        due_date: `${date} - ${month} - ${year}`,
       },
     };
   }
